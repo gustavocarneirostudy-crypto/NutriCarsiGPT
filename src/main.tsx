@@ -48,7 +48,7 @@ function App(){
      if(result.error)throw new Error('Não foi possível carregar os pacientes.');
      if(alive){setPatientList(result.data as unknown as typeof patientList??[]);setPatientTotal(result.count??0)}
     }else if(patientId){
-     const [detail,visits]=await Promise.all([client.from('pacientes').select('*').eq('id',patientId).maybeSingle(),client.from('consultas').select('id,data_consulta,proximo_retorno,peso,observacoes').eq('paciente_id',patientId).order('data_consulta',{ascending:false})]);
+     const [detail,visits]=await Promise.all([client.from('pacientes').select('id,nome,data_nascimento,sexo,email,whatsapp,telefone,peso_inicial,altura,objetivos,objetivo_texto,patologias,restricoes_alimentares,alergias,medicamentos,observacoes').eq('id',patientId).maybeSingle(),client.from('consultas').select('id,data_consulta,proximo_retorno,peso,observacoes').eq('paciente_id',patientId).order('data_consulta',{ascending:false})]);
      if(detail.error||visits.error)throw new Error('Não foi possível carregar o perfil do paciente.');
      if(alive){setPatientDetail(detail.data as unknown as Record<string,unknown>|null);setPatientVisits(visits.data as unknown as typeof patientVisits??[])}
     }

@@ -6,7 +6,8 @@
   "scripts": {
     "dev": "vite --host 0.0.0.0",
     "build": "tsc --noEmit && vite build",
-    "prebuild": "node scripts/check-public-env.mjs"
+    "prebuild": "node scripts/check-public-env.mjs",
+    "test:security": "node --test scripts/public-env-policy.test.mjs"
   },
   "dependencies": {
     "react": "^19.0.0",
