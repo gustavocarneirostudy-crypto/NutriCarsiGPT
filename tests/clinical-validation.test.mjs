@@ -1,0 +1,8 @@
+import test from 'node:test';
+import assert from 'node:assert/strict';
+import {clinicalPayload} from '../src/lib/clinical-validation.ts';
+const data=values=>{const d=new FormData();for(const [k,v] of Object.entries(values))d.set(k,v);return d};
+test('patient trims data, handles decimal comma and preserves optional nulls',()=>{const p=clinicalPayload('patient',data({nome:' Ana Silva ',peso_inicial:'65,5',altura:'165',alergias:'leite, amendoim'}));assert.equal(p.nome,'Ana Silva');assert.equal(p.peso_inicial,65.5);assert.equal(p.email,null);assert.deepEqual(p.alergias,['leite','amendoim']);assert.equal(p.data_nascimento,null)});
+test('blank names, future birthdays and invalid measures cannot be saved',()=>{for(const value of [{nome:'  '},{nome:'Ana',data_nascimento:'2999-01-01'},{nome:'Ana',altura:'NaN'},{nome:'Ana',peso_inicial:'-1'},{nome:'Ana',email:'bad@'}])assert.throws(()=>clinicalPayload('patient',data(value)))});
+test('consultation rejects impossible dates and returns before or on the visit',()=>{for(const value of [{data_consulta:'2026-02-30'},{data_consulta:'2026-10-10',proximo_retorno:'2026-10-09'},{data_consulta:'2026-10-10',proximo_retorno:'2026-10-10'},{data_consulta:''},{data_consulta:'2026-10-10',percentual_gordura:'101'}])assert.throws(()=>clinicalPayload('visit',data(value)))});
+test('visit supports follow-up scheduling and clearing the return on edit',()=>{const p=clinicalPayload('visit',data({data_consulta:'2026-10-10',proximo_retorno:'2026-11-10',peso:'70'}));assert.equal(p.proximo_retorno,'2026-11-10');assert.equal(p.peso,70);assert.equal(clinicalPayload('visit',data({data_consulta:'2026-10-10',proximo_retorno:''})).proximo_retorno,null)});
