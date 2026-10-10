@@ -1,0 +1,331 @@
+/*
+ * Composição do hero de autenticação.
+ * Os elementos geométricos são decorativos; a ilustração é uma camada do layout,
+ * não uma miniatura em um cartão.
+ * Importado depois de style.css para manter os estilos existentes do sistema.
+ */
+
+.memphis-auth {
+  background: #f8faf2;
+  gap: 18px;
+}
+
+.memphis-auth aside {
+  isolation: isolate;
+  background:
+    radial-gradient(ellipse 72% 52% at 95% 80%, rgba(198, 229, 136, .52), transparent 80%),
+    radial-gradient(circle at 4% 0%, rgba(255, 255, 255, .76), transparent 50%),
+    #edf5d9;
+}
+
+.memphis-auth .form-panel {
+  border: 1px solid #e9eedc;
+  border-radius: 28px;
+  background: linear-gradient(160deg, #fff 0%, #fff 65%, #fafcf6 100%);
+}
+
+.memphis-auth .form-wrap { position: relative; }
+.memphis-auth form > .w-full { box-shadow: 0 10px 25px rgba(68, 114, 16, .13); }
+.memphis-auth form > .w-full:focus-visible { outline: 3px solid #7aa928; outline-offset: 3px; }
+
+@media (min-width: 761px) {
+  .memphis-auth aside::before {
+    content: "";
+    position: absolute;
+    width: clamp(240px, 30vw, 475px);
+    aspect-ratio: 1;
+    right: -19%;
+    bottom: 5%;
+    border-radius: 57% 43% 68% 32% / 39% 54% 46% 61%;
+    background: rgba(186, 220, 122, .36);
+    transform: rotate(-13deg);
+    z-index: -1;
+    pointer-events: none;
+  }
+
+  .memphis-auth .aside-content {
+    position: relative;
+    width: 100%;
+    min-height: clamp(565px, 76dvh, 780px);
+    padding: clamp(42px, 7vh, 92px) 0 92px;
+    margin: auto 0;
+    text-align: left;
+    isolation: isolate;
+  }
+
+  .memphis-auth .aside-content > .eyebrow,
+  .memphis-auth .aside-content > h1,
+  .memphis-auth .aside-content > p {
+    position: relative;
+    z-index: 4;
+  }
+
+  .memphis-auth aside .eyebrow {
+    display: inline-flex;
+    width: fit-content;
+    padding: 9px 13px;
+    background: rgba(255, 255, 255, .67);
+    border: 1px solid #d4e6b6;
+    border-radius: 100px;
+    font-size: 10px;
+    letter-spacing: .12em;
+  }
+
+  .memphis-auth aside h1 {
+    font-size: clamp(40px, 4.35vw, 66px);
+    line-height: 1.06;
+    max-width: 490px;
+    margin: 25px 0 19px;
+    text-wrap: balance;
+  }
+
+  .memphis-auth aside p {
+    max-width: 305px;
+    font-size: 15px;
+    line-height: 1.56;
+    color: #536a43;
+  }
+
+  .memphis-auth .auth-visual-composition {
+    position: absolute;
+    inset: 23% -17% -4% 0;
+    pointer-events: none;
+    z-index: 2;
+  }
+
+  .memphis-auth .auth-art-orbit {
+    position: absolute;
+    z-index: 0;
+    width: 84%;
+    max-height: 92%;
+    aspect-ratio: 1;
+    border: 1.5px solid rgba(135, 175, 74, .38);
+    border-radius: 58% 42% 60% 40% / 42% 47% 53% 58%;
+    transform: rotate(-24deg);
+    bottom: -15%;
+    right: -2%;
+  }
+
+  .memphis-auth .auth-art-orbit::after {
+    content: "";
+    position: absolute;
+    width: 17%;
+    aspect-ratio: 1;
+    border-radius: 50%;
+    top: 3%;
+    left: 13%;
+    background: rgba(198, 223, 139, .54);
+  }
+
+  .memphis-auth .auth-art-dots {
+    position: absolute;
+    width: 92px;
+    height: 92px;
+    top: 14%;
+    right: 6%;
+    opacity: .39;
+    background-image: radial-gradient(#789b4a 1.35px, transparent 1.35px);
+    background-size: 15px 15px;
+    border-radius: 50%;
+  }
+
+  .memphis-auth .auth-art-leaf {
+    position: absolute;
+    z-index: 0;
+    width: 115px;
+    height: 55px;
+    left: 7%;
+    bottom: 12%;
+    border-radius: 95% 5% 70% 30% / 70% 20% 80% 30%;
+    background: rgba(138, 180, 74, .22);
+    transform: rotate(-34deg);
+  }
+
+  .memphis-auth .auth-illustration {
+    position: absolute;
+    z-index: 1;
+    display: block;
+    width: 106%;
+    height: 102%;
+    max-height: none;
+    max-width: none;
+    object-fit: contain;
+    object-position: 60% 100%;
+    right: -1%;
+    bottom: -4%;
+    margin: 0;
+    opacity: .98;
+    mix-blend-mode: multiply;
+    transform: rotate(-1deg);
+    -webkit-mask-image: radial-gradient(ellipse 72% 73% at 58% 54%, #000 60%, #000e 75%, transparent 100%);
+    mask-image: radial-gradient(ellipse 72% 73% at 58% 54%, #000 60%, #000e 75%, transparent 100%);
+  }
+
+  .memphis-auth .auth-art-note {
+    position: absolute;
+    right: 7%;
+    bottom: 11%;
+    z-index: 3;
+    display: flex;
+    align-items: center;
+    gap: 11px;
+    padding: 12px 16px 12px 11px;
+    width: max-content;
+    max-width: 250px;
+    border: 1px solid rgba(206, 224, 180, .96);
+    border-radius: 17px;
+    background: rgba(255, 255, 255, .94);
+    box-shadow: 0 15px 40px rgba(44, 83, 22, .12);
+    backdrop-filter: blur(8px);
+    color: #254a2c;
+    font-size: 12px;
+    font-weight: 750;
+    line-height: 1.35;
+    animation: auth-note-float 7s ease-in-out infinite alternate;
+  }
+
+  .memphis-auth .auth-art-note small {
+    display: block;
+    margin-top: 3px;
+    color: #6b7b60;
+    font-weight: 500;
+    font-size: 10px;
+  }
+
+  .memphis-auth .auth-note-icon {
+    display: grid;
+    place-items: center;
+    flex: none;
+    width: 36px;
+    height: 36px;
+    border-radius: 12px;
+    color: #548116;
+    background: #edf6dd;
+  }
+
+  .memphis-auth .aside-footer {
+    position: absolute;
+    left: 0;
+    bottom: 13px;
+    z-index: 4;
+    display: inline-flex;
+    justify-content: flex-start;
+    width: fit-content;
+    max-width: 325px;
+    padding: 10px 13px;
+    border-radius: 12px;
+    border: 1px solid rgba(216, 231, 189, .98);
+    background: rgba(250, 252, 241, .91);
+    box-shadow: 0 8px 24px rgba(55, 97, 22, .08);
+    backdrop-filter: blur(4px);
+    font-size: 11px;
+    text-align: left;
+  }
+
+  .memphis-auth .aside-bottom {
+    position: relative;
+    z-index: 3;
+    text-align: left;
+  }
+
+  .auth-signup.memphis-auth .auth-illustration {
+    transform: rotate(-.5deg) translateX(6px);
+  }
+}
+
+@keyframes auth-note-float {
+  from { transform: translateY(0); }
+  to { transform: translateY(-8px); }
+}
+
+@media (min-width: 761px) and (max-width: 1150px) {
+  .memphis-auth aside { padding: 26px 28px; }
+  .memphis-auth .aside-content {
+    min-height: clamp(520px, 72dvh, 710px);
+    padding-top: 42px;
+  }
+  .memphis-auth aside h1 {
+    font-size: clamp(38px, 4.15vw, 53px);
+    max-width: 355px;
+  }
+  .memphis-auth aside p {
+    max-width: 270px;
+    font-size: 14px;
+  }
+  .memphis-auth .auth-visual-composition {
+    inset: 30% -25% -4% 0;
+  }
+  .memphis-auth .auth-art-note {
+    right: 13%;
+    bottom: 11%;
+    padding: 9px 11px;
+    font-size: 11px;
+  }
+}
+
+@media (min-width: 761px) and (max-height: 740px) {
+  .memphis-auth .aside-content { min-height: 500px; padding-top: 22px; }
+  .memphis-auth aside h1 { margin-top: 15px; margin-bottom: 12px; }
+  .memphis-auth .auth-visual-composition { inset: 31% -18% -4% 4%; }
+  .memphis-auth .auth-art-note { bottom: 10%; }
+  .memphis-auth .aside-footer { bottom: 4px; }
+}
+
+@media (max-width: 760px) {
+  .memphis-auth { gap: 0; }
+  .memphis-auth aside {
+    background: radial-gradient(circle at 89% 43%, #d7e9b6, transparent 67%), #edf5d9;
+  }
+  .memphis-auth .aside-content {
+    flex: 0 0 auto;
+    min-height: 0;
+    padding: 0;
+    margin: 0 0 0 auto;
+  }
+  .memphis-auth .auth-visual-composition {
+    position: relative;
+    width: clamp(135px, 33vw, 205px);
+    height: 104px;
+    margin: -13px -9px -13px 0;
+    overflow: hidden;
+    pointer-events: none;
+  }
+  .memphis-auth .auth-art-orbit {
+    position: absolute;
+    width: 119px;
+    height: 100px;
+    top: 15px;
+    right: -20px;
+    border: 1px solid rgba(135, 175, 74, .3);
+    border-radius: 45%;
+  }
+  .memphis-auth .auth-art-dots,
+  .memphis-auth .auth-art-leaf,
+  .memphis-auth .auth-art-note { display: none; }
+  .memphis-auth .auth-illustration {
+    position: absolute;
+    width: 165%;
+    height: 130%;
+    max-width: none;
+    max-height: none;
+    right: -24%;
+    bottom: -18%;
+    object-fit: contain;
+    margin: 0;
+    mix-blend-mode: multiply;
+    -webkit-mask-image: radial-gradient(ellipse at 52% 50%, #000 61%, transparent 97%);
+    mask-image: radial-gradient(ellipse at 52% 50%, #000 61%, transparent 97%);
+  }
+  .memphis-auth .form-panel {
+    border: 0;
+    border-radius: 0;
+    background: #fff;
+  }
+}
+
+.a11y-motion .memphis-auth .auth-art-note { animation: none !important; }
+.a11y-motion .memphis-auth .auth-illustration { transition: none !important; transform: none !important; }
+@media (prefers-reduced-motion: reduce) {
+  .memphis-auth .auth-art-note { animation: none !important; }
+  .memphis-auth .auth-illustration { transition: none !important; transform: none !important; }
+}
