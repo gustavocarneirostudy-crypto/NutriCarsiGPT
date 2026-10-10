@@ -5,6 +5,7 @@ import {Leaf,ShieldCheck,LoaderCircle,LogOut,Users,CalendarDays,ClipboardList,Ey
 import {Button} from './components/ui/button';
 import {Input} from './components/ui/input';
 import './style.css';
+import './auth-art.css';
 import {AccessibilityAssistant} from './components/accessibility-assistant';
 function publicEndpoint(value: string | undefined, label: string) {
  if (!value) throw new Error(`Configure ${label} em .env.local.`);
