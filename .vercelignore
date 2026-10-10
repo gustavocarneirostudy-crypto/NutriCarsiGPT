@@ -1,0 +1,14 @@
+.git/
+.openai/
+.sites-runtime/
+.vercel/
+node_modules/
+dist/
+.env
+.env.*
+!.env.example
+database/
+*.pem
+*.key
+*.p12
+*.pfx
