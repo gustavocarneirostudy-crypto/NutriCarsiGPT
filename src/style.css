@@ -25,3 +25,149 @@
 @media(max-width:1000px){.memphis-auth{grid-template-columns:48% 52%;padding:14px;gap:8px}.memphis-auth aside{padding:28px 24px}.memphis-auth .form-panel{padding:30px}.memphis-auth aside h1{font-size:42px}}@media(max-width:760px){.memphis-auth{display:block;padding:0}.memphis-auth aside{display:none}.memphis-auth .form-panel{min-height:100dvh;padding:38px 24px}.memphis-auth .form-wrap{max-width:410px}.memphis-auth .logo{margin-bottom:36px}.memphis-auth .form-panel footer{position:static;padding-bottom:75px}.memphis-auth .form-heading h1{font-size:calc(30px * var(--text-scale,1))}}.a11y-motion .auth-illustration{transform:none!important}@media(prefers-reduced-motion:reduce){.auth-illustration{transform:none!important}}
 @media(min-width:761px){.memphis-auth aside{display:flex}}
 @media(max-width:760px){.memphis-auth aside{display:flex;min-height:0;margin:12px 12px 0;padding:14px 18px;border-radius:20px;flex-direction:row;align-items:center;gap:12px}.memphis-auth .aside-brand{max-width:130px;font-size:11px;line-height:1.5}.memphis-auth .aside-content{margin:0 0 0 auto;padding:0}.memphis-auth aside .eyebrow,.memphis-auth aside h1,.memphis-auth aside p,.memphis-auth .aside-footer,.memphis-auth .aside-bottom{display:none}.memphis-auth .auth-illustration{width:140px;height:92px;margin:0}.memphis-auth .form-panel{min-height:calc(100dvh - 130px);padding-top:28px}}
+
+/* Hero de autenticação: ilustração ampliada e integrada à composição. */
+@media (min-width:761px) {
+  .memphis-auth aside {
+    isolation:isolate;
+    background:
+      radial-gradient(ellipse at 90% 82%, #d5eab7 0%, transparent 51%),
+      radial-gradient(circle at 9% 3%, #f8fbe9 0%, transparent 39%),
+      #edf5d9;
+  }
+
+  .memphis-auth aside::before {
+    content:"";
+    position:absolute;
+    width:clamp(190px,25vw,410px);
+    height:clamp(190px,25vw,410px);
+    right:-14%;
+    bottom:8%;
+    border-radius:48% 52% 68% 32% / 47% 41% 59% 53%;
+    background:#d7e9ae;
+    transform:rotate(-18deg);
+    pointer-events:none;
+    z-index:-1;
+  }
+
+  .memphis-auth .aside-content {
+    position:relative;
+    text-align:left;
+    width:100%;
+    min-height:clamp(550px,75dvh,790px);
+    padding:clamp(45px,6vh,92px) 0 95px;
+    margin:auto 0;
+  }
+
+  .memphis-auth .aside-content > :not(.auth-illustration) {
+    position:relative;
+    z-index:2;
+  }
+
+  .memphis-auth aside .eyebrow {
+    display:inline-flex;
+    max-width:fit-content;
+    padding:9px 13px;
+    border:1px solid #cfe1a9;
+    border-radius:999px;
+    background:#ffffffa8;
+    font-size:10px;
+    letter-spacing:.12em;
+  }
+
+  .memphis-auth aside h1 {
+    max-width:460px;
+    font-size:clamp(40px,4.4vw,66px);
+    margin:24px 0 18px;
+    text-wrap:balance;
+  }
+
+  .memphis-auth aside p {
+    max-width:310px;
+    line-height:1.55;
+  }
+
+  .memphis-auth .auth-illustration {
+    position:absolute;
+    right:clamp(-170px,-10vw,-75px);
+    bottom:0;
+    width:clamp(520px,53vw,840px);
+    height:auto;
+    max-width:none;
+    max-height:none;
+    margin:0;
+    object-fit:contain;
+    mix-blend-mode:multiply;
+    opacity:.98;
+    transform:translateY(8px) rotate(-1.5deg);
+    transform-origin:55% 70%;
+    pointer-events:none;
+    z-index:1;
+    -webkit-mask-image:radial-gradient(ellipse 74% 71% at 52% 53%,#000 62%,#000d 76%,transparent 100%);
+    mask-image:radial-gradient(ellipse 74% 71% at 52% 53%,#000 62%,#000d 76%,transparent 100%);
+  }
+
+  .memphis-auth .aside-footer {
+    position:absolute !important;
+    left:0;
+    bottom:24px;
+    display:inline-flex;
+    justify-content:flex-start;
+    width:fit-content;
+    max-width:340px;
+    padding:10px 14px;
+    border:1px solid #d7e7b8;
+    border-radius:14px;
+    background:#f7fae9e8;
+    backdrop-filter:blur(5px);
+    text-align:left;
+    box-shadow:0 8px 22px #395f2112;
+  }
+
+  .memphis-auth .aside-bottom {text-align:left;position:relative;z-index:2}
+
+  .auth-signup.memphis-auth .auth-illustration {
+    transform:translate(10px,8px) rotate(-.5deg);
+  }
+}
+
+@media (min-width:761px) and (max-width:1150px) {
+  .memphis-auth .aside-content {min-height:clamp(510px,72dvh,690px);padding-top:42px}
+  .memphis-auth .auth-illustration {width:clamp(475px,54vw,630px);right:-130px;bottom:24px}
+  .memphis-auth aside h1 {max-width:350px;font-size:clamp(38px,4.3vw,51px)}
+  .memphis-auth aside p {max-width:285px;font-size:14px}
+}
+
+@media (min-width:761px) and (max-height:760px) {
+  .memphis-auth .aside-content {min-height:520px;padding-top:28px}
+  .memphis-auth .auth-illustration {width:min(48vw,570px);bottom:8px}
+  .memphis-auth aside h1 {margin:13px 0;font-size:clamp(35px,4vw,52px)}
+  .memphis-auth .aside-footer {bottom:8px}
+}
+
+@media (max-width:760px) {
+  .memphis-auth aside {
+    isolation:isolate;
+    background:radial-gradient(circle at 82% 45%,#d6e9ad,transparent 57%),#edf5d9;
+  }
+  .memphis-auth .aside-content {min-height:0;padding:0;position:relative;flex:0 0 auto}
+  .memphis-auth .auth-illustration {
+    position:relative;
+    width:clamp(135px,32vw,190px);
+    height:100px;
+    max-height:none;
+    max-width:none;
+    margin:-12px -10px -12px 0;
+    object-fit:contain;
+    mix-blend-mode:multiply;
+    -webkit-mask-image:radial-gradient(ellipse at center,#000 65%,transparent 100%);
+    mask-image:radial-gradient(ellipse at center,#000 65%,transparent 100%);
+    transform:none;
+    pointer-events:none;
+  }
+}
+
+.a11y-motion .memphis-auth .auth-illustration {transform:none !important;transition:none !important}
+@media (prefers-reduced-motion:reduce) {
+  .memphis-auth .auth-illustration {transform:none !important;transition:none !important}
+}
