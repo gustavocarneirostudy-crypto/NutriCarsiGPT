@@ -124,3 +124,19 @@
 :root[data-theme="dark"] .a11y-launcher{background:#20382a;border-color:#516b56}
 :root[data-theme="dark"] .a11y-launcher>span{border-color:#1a2920}
 @media(prefers-reduced-motion:reduce){.theme-trigger,.theme-option{transition:none}}
+
+/* Keep the theme toggle usable on narrow mobile headers. */
+@media(max-width:600px){
+ .workspace-header{gap:8px}
+ .header-account{gap:7px}
+ .header-account>span{display:none}
+ .header-account button{margin-left:0}
+ .header-section{font-size:12px}
+ .workspace-header .theme-trigger{width:36px;min-width:36px;height:36px;padding:0}
+}
+@media(max-width:360px){
+ .auth-topbar .auth-brand{font-size:0}
+ .auth-topbar .auth-brand svg{height:22px;width:22px}
+ .auth-topbar nav{padding:3px}
+ .auth-topbar nav a{padding:8px 6px}
+}
