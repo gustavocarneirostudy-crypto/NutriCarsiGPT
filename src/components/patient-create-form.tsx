@@ -84,10 +84,10 @@ export function PatientCreateForm({initial,onCancel,onSave}:Props){
       <label className="patient-field patient-span-full" htmlFor="patient-name"><span>Nome completo <b>*</b></span><input ref={nameRef} autoComplete="name" id="patient-name" name="nome" type="text" placeholder="Nome e sobrenome" maxLength={150} required defaultValue={field('nome')}/></label>
       <label className="patient-field" htmlFor="patient-birth"><span>Data de nascimento</span><input id="patient-birth" name="data_nascimento" type="date" value={birth} max={new Date().toLocaleDateString('en-CA',{timeZone:'America/Sao_Paulo'})} onChange={e=>setBirth(e.target.value)}/></label>
       <Field label="Idade calculada"><output className="patient-output">{age===null?'—':age+' anos'}</output></Field>
-      <label className="patient-field" htmlFor="patient-sex"><span>Sexo</span><select id="patient-sex" name="sexo" defaultValue=""><option value="">Selecione (opcional)</option><option>Feminino</option><option>Masculino</option><option>Outro</option></select></label>
+      <label className="patient-field" htmlFor="patient-sex"><span>Sexo</span><select id="patient-sex" name="sexo" defaultValue={field('sexo')}><option value="">Selecione (opcional)</option><option>Feminino</option><option>Masculino</option><option>Outro</option></select></label>
       <label className="patient-field" htmlFor="patient-phone"><span>Telefone</span><input id="patient-phone" name="telefone" type="tel" inputMode="numeric" autoComplete="tel-national" placeholder="(11) 99999-9999" value={phone} onChange={e=>setPhone(phoneMask(e.target.value))}/></label>
       <label className="patient-field" htmlFor="patient-whatsapp"><span>WhatsApp</span><input id="patient-whatsapp" name="whatsapp" type="tel" inputMode="numeric" placeholder="(11) 99999-9999" value={whatsapp} onChange={e=>setWhatsapp(phoneMask(e.target.value))}/></label>
-      <label className="patient-field" htmlFor="patient-email"><span>Email</span><input id="patient-email" name="email" type="email" autoComplete="email" maxLength={250} placeholder="paciente@exemplo.com"/></label>
+      <label className="patient-field" htmlFor="patient-email"><span>Email</span><input id="patient-email" name="email" type="email" autoComplete="email" maxLength={250} placeholder="paciente@exemplo.com" defaultValue={field('email')}/></label>
      </div>
     </section>
     <section hidden={active!=='clinico'} aria-label="Dados clínicos">
@@ -96,28 +96,28 @@ export function PatientCreateForm({initial,onCancel,onSave}:Props){
       <label className="patient-field" htmlFor="patient-weight"><span>Peso atual</span><div className="patient-unit"><input id="patient-weight" name="peso_inicial" type="number" min="0.01" max="700" step="0.01" placeholder="65,5" value={weight} onChange={e=>setWeight(e.target.value)}/><span>kg</span></div></label>
       <label className="patient-field" htmlFor="patient-height"><span>Altura</span><div className="patient-unit"><input id="patient-height" name="altura" type="number" min="0.01" max="300" step="0.1" placeholder="165" value={height} onChange={e=>setHeight(e.target.value)}/><span>cm</span></div></label>
       <Field label="IMC (calculado automaticamente)"><output className="patient-output">{bmi!==null&&Number.isFinite(bmi)?bmi.toFixed(1)+' kg/m²':'—'}</output></Field>
-      <label className="patient-field" htmlFor="patient-activity-level"><span>Nível de atividade física</span><select id="patient-activity-level" name="nivel_atividade" defaultValue=""><option value="">Selecione (opcional)</option>{['Sedentário','Levemente ativo','Moderadamente ativo','Muito ativo','Extremamente ativo'].map(x=><option key={x}>{x}</option>)}</select></label>
+      <label className="patient-field" htmlFor="patient-activity-level"><span>Nível de atividade física</span><select id="patient-activity-level" name="nivel_atividade" defaultValue={field('nivel_atividade')}><option value="">Selecione (opcional)</option>{['Sedentário','Levemente ativo','Moderadamente ativo','Muito ativo','Extremamente ativo'].map(x=><option key={x}>{x}</option>)}</select></label>
      </div>
-     <Choices label="Objetivo" name="objetivos" options={objectives}/>
-     <label className="patient-field patient-standalone" htmlFor="patient-goal-extra"><span>Objetivo adicional / descrição</span><textarea id="patient-goal-extra" name="objetivo_texto" rows={2} placeholder="Descreva outros objetivos ou detalhes" maxLength={2000}/></label>
-     <Choices label="Patologias e condições de saúde" name="patologias" options={conditions} allowNone/>
-     <Choices label="Restrições alimentares" name="restricoes_alimentares" options={restrictions} allowNone/>
-     <Choices label="Alergias alimentares" name="alergias" options={allergies} allowNone/>
+     <Choices label="Objetivo" name="objetivos" options={objectives} initial={initial?.objetivos}/>
+     <label className="patient-field patient-standalone" htmlFor="patient-goal-extra"><span>Objetivo adicional / descrição</span><textarea id="patient-goal-extra" name="objetivo_texto" rows={2} placeholder="Descreva outros objetivos ou detalhes" maxLength={2000} defaultValue={field('objetivo_texto')}/></label>
+     <Choices label="Patologias e condições de saúde" name="patologias" options={conditions} allowNone initial={initial?.patologias}/>
+     <Choices label="Restrições alimentares" name="restricoes_alimentares" options={restrictions} allowNone initial={initial?.restricoes_alimentares}/>
+     <Choices label="Alergias alimentares" name="alergias" options={allergies} allowNone initial={initial?.alergias}/>
      <div className="patient-form-grid">
-      <label className="patient-field" htmlFor="patient-meds"><span>Medicamentos contínuos</span><textarea id="patient-meds" name="medicamentos" rows={3} placeholder="Medicamentos em uso" maxLength={2000}/></label>
-      <label className="patient-field" htmlFor="patient-supplements"><span>Suplementos em uso</span><textarea id="patient-supplements" name="suplementos" rows={3} placeholder="Suplementos, se houver" maxLength={2000}/></label>
+      <label className="patient-field" htmlFor="patient-meds"><span>Medicamentos contínuos</span><textarea id="patient-meds" name="medicamentos" rows={3} placeholder="Medicamentos em uso" maxLength={2000} defaultValue={field('medicamentos')}/></label>
+      <label className="patient-field" htmlFor="patient-supplements"><span>Suplementos em uso</span><textarea id="patient-supplements" name="suplementos" rows={3} placeholder="Suplementos, se houver" maxLength={2000} defaultValue={field('suplementos')}/></label>
      </div>
     </section>
     <section hidden={active!=='habitos'} aria-label="Hábitos e rotina">
      <div className="patient-section-heading"><Droplets size={20}/><div><h3>Hábitos e rotina</h3><p>O dia a dia do paciente</p></div></div>
      <div className="patient-form-grid">
-      <label className="patient-field" htmlFor="patient-meals"><span>Refeições por dia</span><input id="patient-meals" name="refeicoes_dia" type="number" min="0" max="30" step="1" placeholder="Ex.: 5"/></label>
-      <label className="patient-field" htmlFor="patient-water"><span>Água por dia</span><div className="patient-unit"><input id="patient-water" name="agua_litros" type="number" min="0" max="40" step="0.1" placeholder="Ex.: 2"/><span>litros</span></div></label>
-      <label className="patient-field" htmlFor="patient-wake"><span>Horário que acorda</span><input id="patient-wake" name="hora_acordar" type="text" inputMode="numeric" maxLength={5} placeholder="Ex.: 630 → 06:30" onBlur={e=>{const normalized=normalizeClockInput(e.currentTarget.value);if(normalized)e.currentTarget.value=normalized}}/></label>
-      <label className="patient-field" htmlFor="patient-sleep"><span>Horário que dorme</span><input id="patient-sleep" name="hora_dormir" type="text" inputMode="numeric" maxLength={5} placeholder="Ex.: 2230 → 22:30" onBlur={e=>{const normalized=normalizeClockInput(e.currentTarget.value);if(normalized)e.currentTarget.value=normalized}}/></label>
+      <label className="patient-field" htmlFor="patient-meals"><span>Refeições por dia</span><input id="patient-meals" name="refeicoes_dia" type="number" min="0" max="30" step="1" placeholder="Ex.: 5" defaultValue={field('refeicoes_por_dia')}/></label>
+      <label className="patient-field" htmlFor="patient-water"><span>Água por dia</span><div className="patient-unit"><input id="patient-water" name="agua_litros" type="number" min="0" max="40" step="0.1" placeholder="Ex.: 2" defaultValue={field('litros_agua')}/><span>litros</span></div></label>
+      <label className="patient-field" htmlFor="patient-wake"><span>Horário que acorda</span><input id="patient-wake" name="hora_acordar" type="text" inputMode="numeric" maxLength={5} defaultValue={field('horario_acorda')} placeholder="Ex.: 630 → 06:30" onBlur={e=>{const normalized=normalizeClockInput(e.currentTarget.value);if(normalized)e.currentTarget.value=normalized}}/></label>
+      <label className="patient-field" htmlFor="patient-sleep"><span>Horário que dorme</span><input id="patient-sleep" name="hora_dormir" type="text" inputMode="numeric" maxLength={5} defaultValue={field('horario_dorme')} placeholder="Ex.: 2230 → 22:30" onBlur={e=>{const normalized=normalizeClockInput(e.currentTarget.value);if(normalized)e.currentTarget.value=normalized}}/></label>
       <label className="patient-field" htmlFor="patient-practice"><span>Pratica atividade física?</span><select id="patient-practice" name="pratica_atividade" value={practice} onChange={e=>setPractice(e.target.value)}><option value="">Não informado</option><option value="true">Sim</option><option value="false">Não</option></select></label>
-      {practice==='true'&&<label className="patient-field" htmlFor="patient-practice-info"><span>Qual atividade e frequência semanal?</span><input id="patient-practice-info" name="atividade_descricao" placeholder="Ex.: caminhada, 3 vezes por semana" maxLength={2000}/></label>}
-      <label className="patient-field patient-span-full" htmlFor="patient-notes"><span>Observações gerais</span><textarea id="patient-notes" name="observacoes" rows={4} placeholder="Outras informações relevantes para o atendimento" maxLength={10000}/></label>
+      {practice==='true'&&<label className="patient-field" htmlFor="patient-practice-info"><span>Qual atividade e frequência semanal?</span><input id="patient-practice-info" name="atividade_descricao" placeholder="Ex.: caminhada, 3 vezes por semana" maxLength={2000} defaultValue={field('atividade_fisica_descricao')}/></label>}
+      <label className="patient-field patient-span-full" htmlFor="patient-notes"><span>Observações gerais</span><textarea id="patient-notes" name="observacoes" rows={4} placeholder="Outras informações relevantes para o atendimento" maxLength={10000} defaultValue={field('observacoes')}/></label>
      </div>
     </section>
    </div>
