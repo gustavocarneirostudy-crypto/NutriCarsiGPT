@@ -58,10 +58,10 @@ export function ThemeSwitcher(){
   try{window.localStorage.setItem(THEME_STORAGE_KEY,next)}catch{/* theme still works in this tab */}
  }
  return <div className="theme-switcher" ref={root}>
-  <button type="button" className="theme-trigger" title="Escolher aparência" aria-label={'Aparência: '+(choices.find(c=>c.value===mode)?.label??'Automático')+'. Alterar tema'} aria-haspopup="menu" aria-expanded={open} onClick={()=>setOpen(v=>!v)}><Icon size={17} aria-hidden="true"/><span className="theme-trigger-label">Tema</span></button>
-  {open&&<div className="theme-popover" role="menu" aria-label="Modo de aparência">
+  <button type="button" className="theme-trigger" title="Escolher aparência" aria-label={'Aparência: '+(choices.find(c=>c.value===mode)?.label??'Automático')+'. Alterar tema'} aria-expanded={open} onClick={()=>setOpen(v=>!v)}><Icon size={17} aria-hidden="true"/><span className="theme-trigger-label">Tema</span></button>
+  {open&&<div className="theme-popover" role="group" aria-label="Modo de aparência">
    <p className="theme-popover-title">Aparência</p>
-   {choices.map(({value,label,description,icon:OptionIcon})=><button key={value} type="button" role="menuitemradio" aria-checked={mode===value} className={'theme-option'+(mode===value?' selected':'')} onClick={()=>select(value)}>
+   {choices.map(({value,label,description,icon:OptionIcon})=><button key={value} type="button" aria-pressed={mode===value} className={'theme-option'+(mode===value?' selected':'')} onClick={()=>select(value)}>
     <span className="theme-option-icon"><OptionIcon size={18}/></span><span className="theme-option-text"><strong>{label}</strong><small>{description}</small></span>{mode===value&&<Check size={17} className="theme-check"/>}
    </button>)}
   </div>}
