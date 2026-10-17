@@ -69,3 +69,12 @@ Rotas de login, dashboard e pacientes têm fallback para index.html na Vercel. A
 - Ao salvar, o `nutricionista_id` é obtido a partir do perfil da conta autenticada; o banco deve aplicar RLS em `pacientes` e `consultas`. O sistema redireciona ao perfil e exibe confirmação.
 - **Banco de dados:** esquema Neon conferido em 17/10/2026. As colunas `refeicoes_por_dia`, `horario_acorda`, `horario_dorme`, `litros_agua`, `atividade_fisica`, `atividade_fisica_descricao`, `suplementos` e `nivel_atividade` já existem. Nenhuma migração necessária. RLS habilitado e forçado em `pacientes` e `consultas`, com políticas por nutricionista. Nenhum dado clínico foi acessado nesta verificação.
 - Testes de validação sem dados reais: `npm test`. Compilação: `npm run build` com endpoints públicos configurados.
+
+## Aparência — modos claro, escuro e automático
+
+- O seletor **Tema** aparece nas telas de login/cadastro/Sobre e no cabeçalho do dashboard, pacientes e formulários.
+- Claro mantém o visual existente; Escuro aplica a paleta verde/grafite em todas as áreas, incluindo diálogos e assistente.
+- Automático (padrão inicial) respeita `prefers-color-scheme` e atualiza a interface quando a preferência do dispositivo muda.
+- A escolha é salva apenas no navegador em `localStorage['nutricarsi-theme']`; não armazena credenciais nem altera pacientes ou registros no Neon.
+- O tema é aplicado no `index.html` antes da renderização para evitar o flash da cor incorreta.
+- Testes de modo de tema e regras de validação: `npm test`.
