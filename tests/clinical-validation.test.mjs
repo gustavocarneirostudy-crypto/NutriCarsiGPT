@@ -25,18 +25,24 @@ test('new patient form preserves selections, free fields and optional habits',()
  assert.deepEqual(p.patologias,['Hipertensão','Enxaqueca']);
  assert.deepEqual(p.restricoes_alimentares,[]);
  assert.equal(p.nivel_atividade,'Moderadamente ativo');
- assert.equal(p.hora_acordar,'06:30');
- assert.equal(p.hora_dormir,'22:30');
- assert.equal(p.agua_litros,2.5);
- assert.equal(p.refeicoes_dia,5);
- assert.equal(p.pratica_atividade,true);
- assert.equal(p.atividade_descricao,'Corrida, 3 vezes por semana');
+ assert.equal(p.horario_acorda,'06:30');
+ assert.equal(p.horario_dorme,'22:30');
+ assert.equal(p.litros_agua,2.5);
+ assert.equal(p.refeicoes_por_dia,5);
+ assert.equal(p.atividade_fisica,true);
+ assert.equal(p.atividade_fisica_descricao,'Corrida, 3 vezes por semana');
  assert.equal(p.suplementos,'Vitamina D');
 });
 test('no physical activity clears activity details and rejects impossible optional habits',()=>{
  const p=clinicalPayload('patient',data({nome:'Patrícia',pratica_atividade:'false',atividade_descricao:'Alguma atividade'}));
- assert.equal(p.pratica_atividade,false);
- assert.equal(p.atividade_descricao,null);
+ assert.equal(p.atividade_fisica,false);
+ assert.equal(p.atividade_fisica_descricao,null);
  for(const invalid of [{hora_acordar:'25'},{hora_dormir:'2460'},{refeicoes_dia:'2.5'},{agua_litros:'-2'},{telefone:'123'}])
   assert.throws(()=>clinicalPayload('patient',data({nome:'Pessoa',...invalid})));
+});
+
+test('patient payload uses existing Neon column names without schema changes',()=>{
+ const p=clinicalPayload('patient',data({nome:'Pessoa',refeicoes_dia:'4',hora_acordar:'730',hora_dormir:'2200',agua_litros:'1.8',pratica_atividade:'true',atividade_descricao:'Ciclismo'}));
+ for(const column of ['refeicoes_por_dia','horario_acorda','horario_dorme','litros_agua','atividade_fisica','atividade_fisica_descricao'])assert.ok(Object.hasOwn(p,column),column);
+ for(const legacy of ['refeicoes_dia','hora_acordar','hora_dormir','agua_litros','pratica_atividade','atividade_descricao'])assert.ok(!Object.hasOwn(p,legacy),legacy);
 });
