@@ -58,3 +58,13 @@ Importe o repositório `gustavocarneirostudy-crypto/NutriCarsiGPT` na Vercel, pr
 Adicione a origem HTTPS exata do domínio Vercel aos trusted origins do Neon Auth antes de testar cadastro/login. Não liberar wildcard de todos os domínios Vercel. Para previews, use um ambiente Neon isolado e suas origens explícitas. Preserve as policies RLS do banco.
 
 Rotas de login, dashboard e pacientes têm fallback para index.html na Vercel. Após publicar, validar acesso direto e atualização dessas rotas, cadastro/login e isolamento de dados.
+
+## Prompt 4 — Cadastro e listagem de pacientes
+
+- `/pacientes`: listagem com busca por nome, objetivo (incluindo texto livre), data da última consulta realizada e paginação de 20 por página; acesso ao perfil ao clicar.
+- `/pacientes/novo`: página exclusiva de cadastro com as abas Pessoal, Clínico e Hábitos e menu lateral preservado. Somente o nome completo é obrigatório.
+- Telefone e WhatsApp têm máscara; idade e IMC são calculados na interface; os horários aceitam entradas como `6`, `630` e `2230`.
+- Objetivos, condições de saúde, restrições e alergias aceitam múltiplas seleções e outras informações. `Nenhum` é exclusivo quando oferecido.
+- Ao salvar, o `nutricionista_id` é obtido a partir do perfil da conta autenticada; o banco deve aplicar RLS em `pacientes` e `consultas`. O sistema redireciona ao perfil e exibe confirmação.
+- **Banco de dados:** antes de publicar esta versão em produção, aplicar `database/20261017_patient_registration.sql` no banco Neon do SistemaNutri e verificar as políticas RLS. A migração acrescenta colunas opcionais, sem modificar dados existentes. Não executá-la no banco de outro projeto.
+- Testes de validação sem dados reais: `npm test`. Compilação: `npm run build` com endpoints públicos configurados.
