@@ -1,5 +1,5 @@
-import {useRef,useState,type FormEvent} from 'react';
-import {ArrowLeft,ArrowRight,CheckCircle2,ChevronLeft,ClipboardList,Droplets,HeartPulse,LoaderCircle,Save,UserRound} from 'lucide-react';
+import {useRef,useState,type FormEvent,type ReactNode} from 'react';
+import {ArrowLeft,ArrowRight,CheckCircle2,ChevronLeft,Droplets,HeartPulse,LoaderCircle,Save,UserRound} from 'lucide-react';
 import {clinicalPayload,normalizeClockInput} from '../lib/clinical-validation';
 import {Button} from './ui/button';
 
@@ -36,7 +36,7 @@ function Choices({label,name,options,allowNone=false}: {label:string;name:string
  }
  return <fieldset className="patient-choice-group"><legend>{label}</legend><div className="patient-chips">{[...options,...(allowNone?['Nenhum']:[])].map(option=><label key={option} className={'patient-chip '+(selected.includes(option)?'selected':'')}><input type="checkbox" name={name} value={option} checked={selected.includes(option)} onChange={()=>toggle(option)}/><span>{option}</span></label>)}</div><label className="patient-field other-field" htmlFor={'extra-'+name}><span>Outros / observações sobre {label.toLowerCase()}</span><input id={'extra-'+name} name={name+'_outros'} type="text" placeholder="Adicione outras informações" maxLength={1500} disabled={none}/></label></fieldset>;
 }
-function Field({label,children,hint}: {label:string;children:React.ReactNode;hint?:string}){
+function Field({label,children,hint}: {label:string;children:ReactNode;hint?:string}){
  return <div className="patient-field"><span>{label}</span>{children}{hint&&<small>{hint}</small>}</div>;
 }
 export function PatientCreateForm({onCancel,onSave}:Props){
