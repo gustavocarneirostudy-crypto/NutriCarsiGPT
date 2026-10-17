@@ -3,7 +3,7 @@ import {ArrowLeft,ArrowRight,CheckCircle2,ChevronLeft,Droplets,HeartPulse,Loader
 import {clinicalPayload,normalizeClockInput} from '../lib/clinical-validation';
 import {Button} from './ui/button';
 
-type Props={onCancel:()=>void;onSave:(values:Record<string,unknown>)=>Promise<void>};
+type Props={initial?:Record<string,unknown>;onCancel:()=>void;onSave:(values:Record<string,unknown>)=>Promise<void>};
 type Step='pessoal'|'clinico'|'habitos';
 const steps:{key:Step;title:string;description:string}[]=[
  {key:'pessoal',title:'Pessoal',description:'Identificação e contato'},
@@ -28,23 +28,28 @@ function ageFromDate(value:string){
  const now=new Date(),age=now.getFullYear()-year-(now.getMonth()+1<month||(now.getMonth()+1===month&&now.getDate()<day)?1:0);
  return Number.isFinite(age)&&age>=0&&age<130?age:null;
 }
-function Choices({label,name,options,allowNone=false}: {label:string;name:string;options:string[];allowNone?:boolean}){
- const [selected,setSelected]=useState<string[]>([]);
+function Choices({label,name,options,allowNone=false,initial}: {label:string;name:string;options:string[];allowNone?:boolean;initial?:unknown}){
+ const existing=Array.isArray(initial)?initial.map(String):[];
+ const [selected,setSelected]=useState<string[]>(existing.filter(v=>options.includes(v)));
+ const [extra,setExtra]=useState(existing.filter(v=>!options.includes(v)&&v!=='Nenhum').join(', '));
  const none=selected.includes('Nenhum');
  function toggle(value:string){
   setSelected(previous=>value==='Nenhum'?(previous.includes('Nenhum')?[]:['Nenhum']):previous.includes(value)?previous.filter(v=>v!==value):[...previous.filter(v=>v!=='Nenhum'),value]);
  }
- return <fieldset className="patient-choice-group"><legend>{label}</legend><div className="patient-chips">{[...options,...(allowNone?['Nenhum']:[])].map(option=><label key={option} className={'patient-chip '+(selected.includes(option)?'selected':'')}><input type="checkbox" name={name} value={option} checked={selected.includes(option)} onChange={()=>toggle(option)}/><span>{option}</span></label>)}</div><label className="patient-field other-field" htmlFor={'extra-'+name}><span>Outros / observações sobre {label.toLowerCase()}</span><input id={'extra-'+name} name={name+'_outros'} type="text" placeholder="Adicione outras informações" maxLength={1500} disabled={none}/></label></fieldset>;
+ return <fieldset className="patient-choice-group"><legend>{label}</legend><div className="patient-chips">{[...options,...(allowNone?['Nenhum']:[])].map(option=><label key={option} className={'patient-chip '+(selected.includes(option)?'selected':'')}><input type="checkbox" name={name} value={option} checked={selected.includes(option)} onChange={()=>toggle(option)}/><span>{option}</span></label>)}</div><label className="patient-field other-field" htmlFor={'extra-'+name}><span>Outros / observações sobre {label.toLowerCase()}</span><input id={'extra-'+name} name={name+'_outros'} type="text" placeholder="Adicione outras informações" maxLength={1500} value={extra} onChange={e=>setExtra(e.target.value)} disabled={none}/></label></fieldset>;
 }
 function Field({label,children,hint}: {label:string;children:ReactNode;hint?:string}){
  return <div className="patient-field"><span>{label}</span>{children}{hint&&<small>{hint}</small>}</div>;
 }
-export function PatientCreateForm({onCancel,onSave}:Props){
+export function PatientCreateForm({initial,onCancel,onSave}:Props){
+ const editing=Boolean(initial?.id);
+ const field=(key:string)=>String(initial?.[key]??'');
  const formRef=useRef<HTMLFormElement>(null);
  const pending=useRef(false);
+ const nameRef=useRef<HTMLInputElement>(null);
  const [active,setActive]=useState<Step>('pessoal'),[saving,setSaving]=useState(false),[error,setError]=useState('');
- const [birth,setBirth]=useState(''),[weight,setWeight]=useState(''),[height,setHeight]=useState('');
- const [phone,setPhone]=useState(''),[whatsapp,setWhatsapp]=useState(''),[practice,setPractice]=useState('');
+ const [birth,setBirth]=useState(field('data_nascimento')),[weight,setWeight]=useState(field('peso_inicial')),[height,setHeight]=useState(field('altura'));
+ const [phone,setPhone]=useState(phoneMask(field('telefone'))),[whatsapp,setWhatsapp]=useState(phoneMask(field('whatsapp'))),[practice,setPractice]=useState(initial?.atividade_fisica===true?'true':initial?.atividade_fisica===false?'false':'');
  const age=ageFromDate(birth);
  const bmi=Number(weight.replace(',','.'))>0&&Number(height.replace(',','.'))>0
   ?Number(weight.replace(',','.'))/Math.pow(Number(height.replace(',','.'))/100,2):null;
@@ -58,13 +63,17 @@ export function PatientCreateForm({onCancel,onSave}:Props){
   }catch(e){
    const message=e instanceof Error?e.message:'Não foi possível salvar o paciente.';
    setError(message);
-   if(message.toLowerCase().includes('nome'))setActive('pessoal');
+   if(/nome|email|telefone|whatsapp|nascimento/i.test(message)){
+     setActive('pessoal');
+     if(/nome/i.test(message))requestAnimationFrame(()=>nameRef.current?.focus());
+    }else if(/medida|peso|altura/i.test(message))setActive('clinico');
+    else if(/horário|refeições|água/i.test(message))setActive('habitos');
   }finally{setSaving(false);pending.current=false}
  }
  return <section className="patient-create-view">
   <div className="patient-form-heading">
-   <button type="button" className="patient-form-back" onClick={onCancel}><ChevronLeft size={18}/>Voltar para pacientes</button>
-   <div className="patient-form-title"><div><p className="workspace-kicker">NOVO CADASTRO</p><h2>Novo paciente<span>.</span></h2><p>Registre os dados no seu ritmo. Apenas o nome completo é obrigatório.</p></div><div className="patient-form-badge"><UserRound size={24}/></div></div>
+   <button type="button" className="patient-form-back" onClick={onCancel}><ChevronLeft size={18}/>{editing?'Voltar para o perfil':'Voltar para pacientes'}</button>
+   <div className="patient-form-title"><div><p className="workspace-kicker">{editing?'DADOS DO PACIENTE':'NOVO CADASTRO'}</p><h2>{editing?'Editar paciente':'Novo paciente'}<span>.</span></h2><p>{editing?'Atualize os dados em qualquer aba. As informações anteriores estão preenchidas.':'Registre os dados no seu ritmo. Apenas o nome completo é obrigatório.'}</p></div><div className="patient-form-badge"><UserRound size={24}/></div></div>
   </div>
   <form ref={formRef} className="patient-registration" onSubmit={submit} noValidate>
    <nav className="patient-form-tabs" aria-label="Etapas do cadastro">{steps.map((step,i)=><button type="button" key={step.key} className={'patient-form-tab '+(active===step.key?'active':'')} onClick={()=>{setActive(step.key);setError('')}} aria-current={active===step.key?'step':undefined}><span className="patient-tab-number">{i+1}</span><span><strong>{step.title}</strong><small>{step.description}</small></span></button>)}</nav>
@@ -72,7 +81,7 @@ export function PatientCreateForm({onCancel,onSave}:Props){
     <section hidden={active!=='pessoal'} aria-label="Dados pessoais">
      <div className="patient-section-heading"><UserRound size={20}/><div><h3>Informações pessoais</h3><p>Identificação e formas de contato</p></div></div>
      <div className="patient-form-grid">
-      <label className="patient-field patient-span-full" htmlFor="patient-name"><span>Nome completo <b>*</b></span><input autoComplete="name" id="patient-name" name="nome" type="text" placeholder="Nome e sobrenome" maxLength={150}/></label>
+      <label className="patient-field patient-span-full" htmlFor="patient-name"><span>Nome completo <b>*</b></span><input ref={nameRef} autoComplete="name" id="patient-name" name="nome" type="text" placeholder="Nome e sobrenome" maxLength={150} required defaultValue={field('nome')}/></label>
       <label className="patient-field" htmlFor="patient-birth"><span>Data de nascimento</span><input id="patient-birth" name="data_nascimento" type="date" value={birth} max={new Date().toLocaleDateString('en-CA',{timeZone:'America/Sao_Paulo'})} onChange={e=>setBirth(e.target.value)}/></label>
       <Field label="Idade calculada"><output className="patient-output">{age===null?'—':age+' anos'}</output></Field>
       <label className="patient-field" htmlFor="patient-sex"><span>Sexo</span><select id="patient-sex" name="sexo" defaultValue=""><option value="">Selecione (opcional)</option><option>Feminino</option><option>Masculino</option><option>Outro</option></select></label>
@@ -113,7 +122,7 @@ export function PatientCreateForm({onCancel,onSave}:Props){
     </section>
    </div>
    {error&&<div className="error patient-form-error" role="alert">{error}</div>}
-   <footer className="patient-form-footer"><div className="patient-form-progress"><CheckCircle2 size={16}/>Campos opcionais podem ser preenchidos depois</div><div className="patient-form-actions"><Button type="button" variant="outline" onClick={idx===0?onCancel:()=>{setActive(steps[idx-1].key);setError('')}} disabled={saving}>{idx===0?<><ArrowLeft size={15}/>Cancelar</>:<><ArrowLeft size={15}/>Anterior</>}</Button>{idx<2&&<Button type="button" className="primary-action" onClick={()=>{setActive(steps[idx+1].key);setError('')}} disabled={saving}>Próxima aba<ArrowRight size={16}/></Button>}<Button className="primary-action" type="submit" disabled={saving}>{saving?<><LoaderCircle size={16} className="spin"/>Salvando…</>:<><Save size={16}/>Salvar paciente</>}</Button></div></footer>
+   <footer className="patient-form-footer"><div className="patient-form-progress"><CheckCircle2 size={16}/>Campos opcionais podem ser preenchidos depois</div><div className="patient-form-actions"><Button type="button" variant="outline" onClick={idx===0?onCancel:()=>{setActive(steps[idx-1].key);setError('')}} disabled={saving}>{idx===0?<><ArrowLeft size={15}/>Cancelar</>:<><ArrowLeft size={15}/>Anterior</>}</Button>{idx<2&&<Button type="button" className="primary-action" onClick={()=>{setActive(steps[idx+1].key);setError('')}} disabled={saving}>Próxima aba<ArrowRight size={16}/></Button>}<Button className="primary-action" type="submit" disabled={saving}>{saving?<><LoaderCircle size={16} className="spin"/>Salvando…</>:<><Save size={16}/>{editing?'Salvar alterações':'Salvar paciente'}</>}</Button></div></footer>
   </form>
  </section>;
 }
