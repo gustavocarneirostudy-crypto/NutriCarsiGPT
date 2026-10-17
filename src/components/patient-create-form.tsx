@@ -77,13 +77,14 @@ export function PatientCreateForm({initial,onCancel,onSave}:Props){
   </div>
   <form ref={formRef} className="patient-registration" onSubmit={submit} noValidate>
    <nav className="patient-form-tabs" aria-label="Etapas do cadastro">{steps.map((step,i)=><button type="button" key={step.key} className={'patient-form-tab '+(active===step.key?'active':'')} onClick={()=>{setActive(step.key);setError('')}} aria-current={active===step.key?'step':undefined}><span className="patient-tab-number">{i+1}</span><span><strong>{step.title}</strong><small>{step.description}</small></span></button>)}</nav>
+   {error&&<div className="error patient-form-error" role="alert">{error}</div>}
    <div className="patient-form-content">
     <section hidden={active!=='pessoal'} aria-label="Dados pessoais">
      <div className="patient-section-heading"><UserRound size={20}/><div><h3>Informações pessoais</h3><p>Identificação e formas de contato</p></div></div>
      <div className="patient-form-grid">
       <label className="patient-field patient-span-full" htmlFor="patient-name"><span>Nome completo <b>*</b></span><input ref={nameRef} autoComplete="name" id="patient-name" name="nome" type="text" placeholder="Nome e sobrenome" maxLength={150} required defaultValue={field('nome')}/></label>
       <label className="patient-field" htmlFor="patient-birth"><span>Data de nascimento</span><input id="patient-birth" name="data_nascimento" type="date" value={birth} max={new Date().toLocaleDateString('en-CA',{timeZone:'America/Sao_Paulo'})} onChange={e=>setBirth(e.target.value)}/></label>
-      <Field label="Idade calculada"><output className="patient-output">{age===null?'—':age+' anos'}</output></Field>
+      <Field label="Idade calculada"><output aria-live="polite" className="patient-output">{age===null?'—':age+' anos'}</output></Field>
       <label className="patient-field" htmlFor="patient-sex"><span>Sexo</span><select id="patient-sex" name="sexo" defaultValue={field('sexo')}><option value="">Selecione (opcional)</option><option>Feminino</option><option>Masculino</option><option>Outro</option></select></label>
       <label className="patient-field" htmlFor="patient-phone"><span>Telefone</span><input id="patient-phone" name="telefone" type="tel" inputMode="numeric" autoComplete="tel-national" placeholder="(11) 99999-9999" value={phone} onChange={e=>setPhone(phoneMask(e.target.value))}/></label>
       <label className="patient-field" htmlFor="patient-whatsapp"><span>WhatsApp</span><input id="patient-whatsapp" name="whatsapp" type="tel" inputMode="numeric" placeholder="(11) 99999-9999" value={whatsapp} onChange={e=>setWhatsapp(phoneMask(e.target.value))}/></label>
@@ -95,7 +96,7 @@ export function PatientCreateForm({initial,onCancel,onSave}:Props){
      <div className="patient-form-grid">
       <label className="patient-field" htmlFor="patient-weight"><span>Peso atual</span><div className="patient-unit"><input id="patient-weight" name="peso_inicial" type="number" min="0.01" max="700" step="0.01" placeholder="65,5" value={weight} onChange={e=>setWeight(e.target.value)}/><span>kg</span></div></label>
       <label className="patient-field" htmlFor="patient-height"><span>Altura</span><div className="patient-unit"><input id="patient-height" name="altura" type="number" min="0.01" max="300" step="0.1" placeholder="165" value={height} onChange={e=>setHeight(e.target.value)}/><span>cm</span></div></label>
-      <Field label="IMC (calculado automaticamente)"><output className="patient-output">{bmi!==null&&Number.isFinite(bmi)?bmi.toFixed(1)+' kg/m²':'—'}</output></Field>
+      <Field label="IMC (calculado automaticamente)"><output aria-live="polite" className="patient-output">{bmi!==null&&Number.isFinite(bmi)?new Intl.NumberFormat('pt-BR',{minimumFractionDigits:1,maximumFractionDigits:1}).format(bmi)+' kg/m²':'—'}</output></Field>
       <label className="patient-field" htmlFor="patient-activity-level"><span>Nível de atividade física</span><select id="patient-activity-level" name="nivel_atividade" defaultValue={field('nivel_atividade')}><option value="">Selecione (opcional)</option>{['Sedentário','Levemente ativo','Moderadamente ativo','Muito ativo','Extremamente ativo'].map(x=><option key={x}>{x}</option>)}</select></label>
      </div>
      <Choices label="Objetivo" name="objetivos" options={objectives} initial={initial?.objetivos}/>
@@ -121,7 +122,6 @@ export function PatientCreateForm({initial,onCancel,onSave}:Props){
      </div>
     </section>
    </div>
-   {error&&<div className="error patient-form-error" role="alert">{error}</div>}
    <footer className="patient-form-footer"><div className="patient-form-progress"><CheckCircle2 size={16}/>Campos opcionais podem ser preenchidos depois</div><div className="patient-form-actions"><Button type="button" variant="outline" onClick={idx===0?onCancel:()=>{setActive(steps[idx-1].key);setError('')}} disabled={saving}>{idx===0?<><ArrowLeft size={15}/>Cancelar</>:<><ArrowLeft size={15}/>Anterior</>}</Button>{idx<2&&<Button type="button" className="primary-action" onClick={()=>{setActive(steps[idx+1].key);setError('')}} disabled={saving}>Próxima aba<ArrowRight size={16}/></Button>}<Button className="primary-action" type="submit" disabled={saving}>{saving?<><LoaderCircle size={16} className="spin"/>Salvando…</>:<><Save size={16}/>{editing?'Salvar alterações':'Salvar paciente'}</>}</Button></div></footer>
   </form>
  </section>;
