@@ -46,21 +46,21 @@ export function clinicalPayload(kind:ClinicalKind,data:FormData):Record<string,u
   if(data.has('refeicoes_dia')){
    const value=number('refeicoes_dia',30,true);
    if(value!==null&&!Number.isInteger(value))throw new Error('O número de refeições deve ser inteiro.');
-   result.refeicoes_dia=value;
+   result.refeicoes_por_dia=value;
   }
-  if(data.has('agua_litros'))result.agua_litros=number('agua_litros',40,true);
+  if(data.has('agua_litros'))result.litros_agua=number('agua_litros',40,true);
   for(const key of ['hora_acordar','hora_dormir']){
    if(data.has(key)){
     const raw=text(key),time=raw?normalizeClockInput(raw):null;
     if(raw&&!time)throw new Error('Confira o horário informado: use 6, 630, 2230 ou HH:MM.');
-    result[key]=time;
+    result[key==='hora_acordar'?'horario_acorda':'horario_dorme']=time;
    }
   }
   if(data.has('pratica_atividade')){
    const raw=text('pratica_atividade');
    if(raw&&!['true','false'].includes(raw))throw new Error('Confira a opção de atividade física.');
-   result.pratica_atividade=raw?raw==='true':null;
-   result.atividade_descricao=raw==='true'?text('atividade_descricao')||null:null;
+   result.atividade_fisica=raw?raw==='true':null;
+   result.atividade_fisica_descricao=raw==='true'?text('atividade_descricao')||null:null;
   }
  }else{
   result.data_consulta=date('data_consulta');if(!result.data_consulta)throw new Error('Informe a data da consulta.');
