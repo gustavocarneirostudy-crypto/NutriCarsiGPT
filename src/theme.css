@@ -1,0 +1,126 @@
+
+/* Appearance: independent of backend, shared by public and authenticated screens. */
+:root{
+ --theme-surface:#ffffff;
+ --theme-raised:#f7faf6;
+ --theme-line:#e5eee6;
+ --theme-ink:#294332;
+ --theme-subtle:#708474;
+ --theme-accent:#668b3c;
+ color-scheme:light;
+}
+.theme-switcher{position:relative;display:inline-flex;align-items:center;flex-shrink:0;z-index:40}
+.theme-trigger{display:inline-flex;align-items:center;justify-content:center;gap:7px;min-width:42px;height:40px;padding:0 11px;border:1px solid var(--theme-line);border-radius:11px;background:var(--theme-surface);color:var(--theme-ink);font-family:inherit;font-weight:650;font-size:12px;cursor:pointer;white-space:nowrap}
+.theme-trigger:hover{background:var(--theme-raised);border-color:#93ac89}
+.theme-trigger:focus-visible,.theme-popover button:focus-visible{outline:2px solid #73ab65;outline-offset:3px}
+.theme-popover{position:absolute;right:0;top:calc(100% + 10px);width:258px;padding:9px;border:1px solid var(--theme-line);background:var(--theme-surface);color:var(--theme-ink);border-radius:17px;box-shadow:0 18px 45px #09170e24;z-index:80}
+.theme-popover-title{padding:7px 10px 10px;margin:0;font-size:11px;letter-spacing:.07em;text-transform:uppercase;font-weight:750;color:var(--theme-subtle)}
+.theme-option{display:flex;align-items:center;width:100%;text-align:left;gap:10px;border:1px solid transparent;background:transparent;color:var(--theme-ink);border-radius:10px;padding:10px 11px;min-height:59px;font-family:inherit;cursor:pointer}
+.theme-option:hover,.theme-option.selected{background:var(--theme-raised)}
+.theme-option.selected{border-color:var(--theme-line)}
+.theme-option-icon{width:34px;height:34px;display:grid;place-items:center;flex-shrink:0;border-radius:10px;background:var(--theme-raised);color:var(--theme-accent)}
+.theme-option-text{flex:1;display:flex;flex-direction:column;gap:3px;min-width:0}
+.theme-option-text strong{font-size:13px;font-weight:700}
+.theme-option-text small{font-size:11px;color:var(--theme-subtle)}
+.theme-check{color:var(--theme-accent);flex-shrink:0}
+.header-account .theme-trigger{margin-left:0}
+.auth-topbar .theme-switcher{margin-left:8px}
+@media(max-width:850px){.header-account .theme-trigger-label{display:none}}
+@media(max-width:760px){.auth-topbar{gap:8px}.auth-topbar .theme-switcher{margin-left:0}.auth-topbar .theme-trigger-label{display:none}.auth-topbar .theme-trigger{min-width:36px;width:36px;height:36px;padding:0}.theme-popover{right:0}}
+@media(max-width:430px){.auth-topbar nav{gap:2px}.auth-topbar nav a{padding:8px 7px;font-size:10px}.auth-brand{font-size:16px}.auth-topbar .theme-trigger{min-width:32px;width:32px}}
+
+/* Dark mode palette — muted forest charcoal with fresh botanical highlights. */
+:root[data-theme="dark"]{
+ color-scheme:dark;
+ --theme-bg:#101814;
+ --theme-sidebar:#121e17;
+ --theme-surface:#1b2821;
+ --theme-raised:#233328;
+ --theme-line:#32473a;
+ --theme-ink:#eef7ee;
+ --theme-subtle:#b0c4b5;
+ --theme-accent:#b6d981;
+ background:var(--theme-bg);
+ color:var(--theme-ink);
+}
+:root[data-theme="dark"] body{background:var(--theme-bg);color:var(--theme-ink)}
+:root[data-theme="dark"] ::selection{background:#86b75f66;color:#f6fff3}
+:root[data-theme="dark"] :is(.workspace,.workspace-body,.dashboard,.loading){background:var(--theme-bg);color:var(--theme-ink)}
+:root[data-theme="dark"] :is(.workspace-sidebar,.workspace-header){background:var(--theme-sidebar);border-color:var(--theme-line)}
+:root[data-theme="dark"] :is(.workspace-sidebar .logo,.workspace .logo,.workspace-header,.header-account,.header-section,.page-title h1,.summary-card strong,.patient-form-title h2){color:var(--theme-ink)}
+:root[data-theme="dark"] :is(.sidebar-label,.workspace-kicker,.header-account small,.date-line,.page-title p,.workspace-footer,.sidebar-bottom span,.sidebar-bottom p){color:var(--theme-subtle)!important}
+:root[data-theme="dark"] :is(.sidebar-link,.header-section){color:#c2d2c5}
+:root[data-theme="dark"] .sidebar-link.active{background:#2a4430;color:#d2f1a8}
+:root[data-theme="dark"] .sidebar-link:hover{background:#223a2a;color:#ecffdf}
+:root[data-theme="dark"] :is(.sidebar-bottom,.workspace-footer){border-color:var(--theme-line)}
+:root[data-theme="dark"] :is(.summary-card,.dash-panel,.return-panel,.patient-registration,.clinical-dialog){background:var(--theme-surface);border-color:var(--theme-line);color:var(--theme-ink);box-shadow:0 6px 30px #050c081e}
+:root[data-theme="dark"] :is(.panel-heading,.patient-row,.appointment-row,.profile-details,.patient-section-heading,.clinical-dialog form>footer){border-color:var(--theme-line)}
+:root[data-theme="dark"] :is(.panel-heading h2,.summary-card strong,.empty-panel h3,.patient-row strong,.appointment-row strong,.profile-details dd,.patient-form-title h2,.patient-section-heading h3,.patient-form-tab strong,.patient-directory-last span){color:var(--theme-ink)}
+:root[data-theme="dark"] :is(.summary-top,.summary-card p,.panel-heading p,.empty-panel p,.overdue-status,.overdue-list small,.appointment-row div>span,.patient-row div>span,.patient-directory-info span,.profile-details dt,.patient-form-title p:not(.workspace-kicker),.patient-section-heading p,.patient-form-tab small,.patient-form-progress,.patient-directory-last small,.visit-note){color:var(--theme-subtle)}
+:root[data-theme="dark"] :is(.panel-heading>svg,.patient-link>svg,.patient-search>svg){color:#a7c1ab}
+:root[data-theme="dark"] :is(.summary-icon,.mini-avatar,.empty-icon,.patient-avatar,.patient-tag,.appointment-date,.professional-icon,.patient-form-badge,.patient-section-heading>svg){background:#2b4030;color:#b8db8b}
+:root[data-theme="dark"] .summary-1 .summary-icon{background:#24394a;color:#9bc3ec}
+:root[data-theme="dark"] .summary-2 .summary-icon{background:#413721;color:#f7d38b}
+:root[data-theme="dark"] :is(.patient-link:hover,.theme-option:hover){background:#253a2c}
+:root[data-theme="dark"] :is(.return-panel .overdue-list a,.overdue-list a,.panel-action,.back-link){color:#b9e28a;border-color:var(--theme-line)}
+:root[data-theme="dark"] :is(.professional-card,.save-notice){background:#203729;border-color:#35553b;color:#c4e6a3}
+:root[data-theme="dark"] :is(.professional-card h2,.professional-card p,.professional-card>span){color:#c1dcb7}
+:root[data-theme="dark"] .skeleton-number{background:#2c4333}
+:root[data-theme="dark"] :is(.workspace .page-title button:not(.primary-action),.header-account button,.pagination button,.visit-edit,.clinical-dialog form>footer button:not([type=submit])){background:var(--theme-raised);border-color:var(--theme-line);color:var(--theme-ink)}
+:root[data-theme="dark"] .workspace .page-title button:hover:not(.primary-action){background:#304a38;border-color:#62865f}
+:root[data-theme="dark"] .workspace .primary-action,
+:root[data-theme="dark"] .workspace .page-title .primary-action,
+:root[data-theme="dark"] .clinical-dialog form>footer button[type=submit]{background:#82ac54;color:#102112;border-color:#82ac54}
+:root[data-theme="dark"] .workspace .primary-action:hover{background:#a2c96b;color:#102112;border-color:#a2c96b}
+:root[data-theme="dark"] :is(.patient-search input,.clinical-dialog input,.clinical-dialog select,.clinical-dialog textarea,.patient-field input,.patient-field select,.patient-field textarea,.minimal-auth input){background:#111d17;border-color:#3c5544;color:#edf7ec;box-shadow:none}
+:root[data-theme="dark"] :is(input,textarea)::placeholder{color:#92aa9b;opacity:1}
+:root[data-theme="dark"] :is(input,textarea,select){color-scheme:dark}
+:root[data-theme="dark"] :is(.patient-field,.patient-choice-group legend,.patient-form-back,.clinical-dialog label){color:#d5e8d6}
+:root[data-theme="dark"] :is(.patient-field small,.patient-unit>span){color:#b3c3b4}
+:root[data-theme="dark"] :is(.patient-output,.patient-chip,.patient-tab-number,.clinical-dialog>header button){background:#263a2b;border-color:#38543f;color:#d6eabf}
+:root[data-theme="dark"] .patient-chip.selected{background:#34523b;border-color:#6caa72;color:#efffe7}
+:root[data-theme="dark"] .patient-chip input{accent-color:#a5d879}
+:root[data-theme="dark"] :is(.patient-form-tabs,.patient-form-footer){background:#17261d;border-color:var(--theme-line)}
+:root[data-theme="dark"] .patient-form-tab{color:#b7cbb9}
+:root[data-theme="dark"] .patient-form-tab:hover{background:#2b4030}
+:root[data-theme="dark"] .patient-form-tab.active{background:#2c4332;color:#eaf8df;border-color:#527654;box-shadow:none}
+:root[data-theme="dark"] .patient-form-tab.active .patient-tab-number{background:#89b85a;color:#0d200e}
+:root[data-theme="dark"] .patient-registration .patient-form-footer{box-shadow:0 -6px 20px #07110a45}
+:root[data-theme="dark"] .clinical-dialog::backdrop{background:#000a}
+:root[data-theme="dark"] .error{background:#4c2427;border-color:#8d4b4c;color:#ffd7d2}
+
+/* Public pages: login, registration and About. */
+:root[data-theme="dark"] .minimal-auth{background:#101a15;color:var(--theme-ink)}
+:root[data-theme="dark"] .minimal-auth::before{background:#192a1d}
+:root[data-theme="dark"] .minimal-auth::after{background:#182821}
+:root[data-theme="dark"] .auth-brand{color:#e4f4df}
+:root[data-theme="dark"] .auth-topbar nav{background:#1e3024;border-color:#334738}
+:root[data-theme="dark"] .auth-topbar nav a{color:#c5d7c4}
+:root[data-theme="dark"] .auth-topbar nav a[aria-current=page]{background:#39513c;color:#f0fbe8;box-shadow:none}
+:root[data-theme="dark"] :is(.minimal-auth aside h1,.minimal-auth .form-heading h1,.about-panel h1,.minimal-auth .logo){color:var(--theme-ink)}
+:root[data-theme="dark"] :is(.minimal-auth aside p,.minimal-auth .form-heading p,.minimal-auth .aside-footer,.about-intro,.about-panel .about-note,.minimal-auth .switch,.minimal-auth .security,.minimal-auth .form-panel footer){color:#b8c9b6}
+:root[data-theme="dark"] :is(.minimal-auth aside .eyebrow,.minimal-auth aside h1 em,.minimal-auth .logo .word,.about-panel .eyebrow){color:#b2d67c}
+:root[data-theme="dark"] .minimal-auth .form-panel{background:#1c2a21;border-color:#344b3b;box-shadow:0 18px 65px #030b073e}
+:root[data-theme="dark"] .minimal-auth .form-panel label{color:#d9e9d7}
+:root[data-theme="dark"] .minimal-auth .logo>span:first-child{background:#30452e;color:#b6d984}
+:root[data-theme="dark"] .minimal-auth form>.w-full{background:#85b45b;border-color:#85b45b;color:#102016}
+:root[data-theme="dark"] .minimal-auth form>.w-full:hover:not(:disabled){background:#a3cb73;color:#101b12}
+:root[data-theme="dark"] .minimal-auth .switch a{color:#b9dc88}
+:root[data-theme="dark"] .about-layout .about-panel{background:transparent;border:0;box-shadow:none}
+:root[data-theme="dark"] .about-features{border-color:#334c3a}
+:root[data-theme="dark"] :is(.about-features h2,.about-features p){color:#e1edde}
+:root[data-theme="dark"] .about-cta{background:#85b45b;color:#132112}
+
+/* Accessibility panel follows the application without overriding explicit high contrast. */
+:root[data-theme="dark"] .a11y-panel{background:#1a2920;color:#eef7ed;border-color:#35503e;box-shadow:0 18px 60px #0008}
+:root[data-theme="dark"] .a11y-panel :is(p,header span,.assistant-note){color:#b5cbb7}
+:root[data-theme="dark"] .a11y-panel button{background:#293c2f;border-color:#405a44;color:#edf5e9}
+:root[data-theme="dark"] .a11y-panel button:hover:not(:disabled){background:#344d3a}
+:root[data-theme="dark"] .assistant-tabs{background:#15251b}
+:root[data-theme="dark"] .a11y-panel .assistant-tabs button[aria-pressed=true]{background:#38513c;color:#eefbe4}
+:root[data-theme="dark"] .a11y-panel .assistant-questions button{background:#1e3025;color:#e6f4e5}
+:root[data-theme="dark"] .a11y-panel .assistant-questions button[aria-pressed=true],
+:root[data-theme="dark"] .assistant-answer{background:#294634;color:#edf7ea;border-color:#53775a}
+:root[data-theme="dark"] .a11y-launcher{background:#20382a;border-color:#516b56}
+:root[data-theme="dark"] .a11y-launcher>span{border-color:#1a2920}
+@media(prefers-reduced-motion:reduce){.theme-trigger,.theme-option{transition:none}}
