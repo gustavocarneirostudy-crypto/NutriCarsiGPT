@@ -49,14 +49,17 @@ function App(){
      if(summary.error||recent.error||future.error)throw new Error('Não foi possível carregar os dados do painel.');
      if(alive){setDashboard(summary.data as unknown as typeof dashboard);setRecentPatients(recent.data as unknown as typeof recentPatients??[]);setAppointments(future.data as unknown as typeof appointments??[])}
     }else if(page==='pacientes'){
-     let query=client.from('pacientes').select('id,nome,created_at,objetivos,objetivo_texto',{count:'exact'});if(patientSearch)query=query.ilike('nome','%'+patientSearch.replace(/[\\%_]/g,'\\let query=client.from('pacientes').select('id,nome,created_at',{count:'exact'});if(patientSearch)query=query.ilike('nome','%'+patientSearch.replace(/[\\%_]/g,'\\$&')+'%');const result=await query.order('nome').range(patientPage*20,patientPage*20+19);
-     if(result.error)throw new Error('Não foi possível carregar os pacientes.');
-     if(alive){setPatientList(result.data as unknown as typeof patientList??[]);setPatientTotal(result.count??0)}')+'%');const result=await query.order('nome').range(patientPage*20,patientPage*20+19);
+     let query=client.from('pacientes').select('id,nome,created_at,objetivos,objetivo_texto',{count:'exact'});
+     if(patientSearch)query=query.ilike('nome','%'+patientSearch.replace(/[\\%_]/g,'\\$&')+'%');
+     const result=await query.order('nome').range(patientPage*20,patientPage*20+19);
      if(result.error)throw new Error('Não foi possível carregar os pacientes.');
      const ids=(result.data??[]).map(p=>p.id as string);
      const lastDates:Record<string,string>={};
      if(ids.length){
-      const visits=await client.from('consultas').select('paciente_id,data_consulta').in('paciente_id',ids).lte('data_consulta',new Date().toLocaleDateString('en-CA',{timeZone:'America/Sao_Paulo'})).order('data_consulta',{ascending:false});
+      const visits=await client.from('consultas').select('paciente_id,data_consulta')
+       .in('paciente_id',ids)
+       .lte('data_consulta',new Date().toLocaleDateString('en-CA',{timeZone:'America/Sao_Paulo'}))
+       .order('data_consulta',{ascending:false});
       if(visits.error)throw new Error('Não foi possível carregar a última consulta dos pacientes.');
       for(const v of visits.data??[])if(v.paciente_id&&!lastDates[v.paciente_id])lastDates[v.paciente_id]=v.data_consulta;
      }
